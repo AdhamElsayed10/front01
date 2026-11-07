@@ -24,7 +24,7 @@ function ProtectedRoute({ children }) {
 
   // Auth confirmed as empty — redirect to login
   if (!admin) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/manage" replace />;
   }
 
   // Authenticated — render children
@@ -46,14 +46,8 @@ function PublicRoute({ children }) {
   return children;
 }
 
-function RootRedirect() {
-  const { admin, loading } = useAuth();
-
-  // Wait for auth state to settle
-  if (loading) return null;
-
-  // Redirect based on auth status
-  return <Navigate to={admin ? '/dashboard' : '/login'} replace />;
+function HiddenPage() {
+  return <div className="relative z-[10000] min-h-dvh bg-white" aria-hidden="true" />;
 }
 
 export default function App() {
@@ -76,15 +70,15 @@ export default function App() {
           }}
         />
         <Routes>
-          <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+          <Route path="/manage" element={<PublicRoute><LoginPage /></PublicRoute>} />
           <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
             <Route index element={<HomePage />} />
             <Route path="upload" element={<UploadPage />} />
             <Route path="documents" element={<DocumentsPage />} />
             <Route path="settings" element={<SettingsPage />} />
           </Route>
-          <Route path="/" element={<RootRedirect />} />
-          <Route path="*" element={<RootRedirect />} />
+          <Route path="/" element={<HiddenPage />} />
+          <Route path="*" element={<HiddenPage />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

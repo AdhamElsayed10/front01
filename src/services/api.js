@@ -22,7 +22,7 @@ api.interceptors.response.use(
     const isLoginRequest = err.config?.url?.endsWith('/auth/login');
     if (err.response?.status === 401 && !isLoginRequest) {
       localStorage.removeItem('token');
-      window.location.href = '/login';
+      window.location.href = '/manage';
     }
     return Promise.reject(err);
   }

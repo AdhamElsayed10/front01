@@ -22,7 +22,7 @@ export default function DashboardLayout() {
 
   const handleLogout = () => {
     logout();
-    navigate('/login', { replace: true });
+    navigate('/manage', { replace: true });
   };
 
   const Sidebar = ({ mobile = false }) => (
