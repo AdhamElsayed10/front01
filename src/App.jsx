@@ -60,7 +60,7 @@ export default function App() {
           toastOptions={{
             style: {
               background: 'hsl(222 22% 9%)',
-              color: 'hsl(210 25% 92%)',
+              color: 'hsl(210 25% 94%)',
               border: '1px solid hsl(220 12% 19%)',
               borderRadius: '10px',
               fontSize: '14px',
