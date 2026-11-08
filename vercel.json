@@ -25,6 +25,10 @@
       "destination": "https://back01-production-3338.up.railway.app/pdf/:path*"
     },
     {
+      "source": "/public-assets/:path*",
+      "destination": "https://back01-production-3338.up.railway.app/public-assets/:path*"
+    },
+    {
       "source": "/((?!api|pdf).*|[^.]+)",
       "destination": "/index.html"
     }
