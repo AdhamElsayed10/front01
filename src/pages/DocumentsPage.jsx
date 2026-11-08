@@ -19,6 +19,7 @@ import {
 import { ContractDataEditor } from '../components/contract-data-editor';
 import { QRPlacementEditor, DEFAULT_QR_SETTINGS } from '../components/qr-placement-editor';
 import { restampPdf } from '../utils/restampPdf';
+import { getPublicDocumentUrl } from '../utils/publicDocumentUrl';
 
 // ─── Status Badge ──────────────────────────────────────────────────────
 const STATUS_CONFIG = {
@@ -178,7 +179,7 @@ export default function DocumentsPage() {
   };
 
   const handleView = (doc) => {
-    const viewUrl = doc?.qrToken ? `/pdf/${doc.qrToken}` : doc?.qrUrl;
+    const viewUrl = getPublicDocumentUrl(doc);
     window.open(viewUrl, '_blank', 'noopener,noreferrer');
   };
 
@@ -203,7 +204,7 @@ export default function DocumentsPage() {
   };
 
   const handleCopyUrl = async (doc) => {
-    const urlToCopy = doc?.qrUrl || (doc?.qrToken ? `${window.location.origin}/pdf/${doc.qrToken}` : '');
+    const urlToCopy = getPublicDocumentUrl(doc);
     if (!urlToCopy) {
       toast.error('No QR URL available to copy');
       return;
@@ -245,7 +246,7 @@ export default function DocumentsPage() {
     setPlacementSaving(true);
     try {
       const res = await api.get('/documents/' + placementDoc.id + '/original', { responseType: 'arraybuffer' });
-      const bytes = await restampPdf(res.data, placementDoc.qrUrl, placementSettings);
+      const bytes = await restampPdf(res.data, getPublicDocumentUrl(placementDoc), placementSettings);
       const blob = new Blob([bytes], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -453,7 +454,7 @@ export default function DocumentsPage() {
                       <td className="px-5 py-3.5 hidden sm:table-cell">
                         <div className="flex items-center gap-1.5">
                           <span className="text-xs font-mono text-muted-foreground truncate max-w-[200px] block">
-                            {doc.qrUrl}
+                            {getPublicDocumentUrl(doc)}
                           </span>
                           <button
                             title={copied ? 'Copied' : 'Copy URL'}
@@ -564,5 +565,4 @@ export default function DocumentsPage() {
     </div>
   );
 }
-
 

@@ -15,6 +15,7 @@ import { BorderBeam } from '../components/magicui/border-beam';
 import { BRAND } from '../lib/colors';
 import { QRPlacementEditor, DEFAULT_QR_SETTINGS } from '../components/qr-placement-editor';
 import { QRMark } from '../components/qrcode-mark';
+import { getPublicDocumentUrl } from '../utils/publicDocumentUrl';
 
 function formatSize(bytes) {
   if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
@@ -163,7 +164,7 @@ export default function UploadPage() {
   };
 
   const handleViewDocument = (doc) => {
-    window.open(doc.qrUrl, '_blank', 'noopener,noreferrer');
+    window.open(getPublicDocumentUrl(doc), '_blank', 'noopener,noreferrer');
   };
 
   const handleDownloadDocument = async (doc) => {
@@ -183,7 +184,7 @@ export default function UploadPage() {
   };
 
   const handleCopyUrl = async (doc) => {
-    const urlToCopy = doc?.qrUrl || (doc?.qrToken ? `${window.location.origin}/pdf/${doc.qrToken}` : '');
+    const urlToCopy = getPublicDocumentUrl(doc);
     if (!urlToCopy) {
       toast.error('No QR URL available to copy');
       return;
@@ -441,7 +442,7 @@ export default function UploadPage() {
                           <Badge variant="muted">Standard PDF · data not filled</Badge>
                         )}
                       </div>
-                      <p className="text-xs text-muted-foreground font-mono mt-1.5 truncate">{doc.qrUrl}</p>
+                      <p className="text-xs text-muted-foreground font-mono mt-1.5 truncate">{getPublicDocumentUrl(doc)}</p>
                     </div>
                   </div>
                   {!isFailed && (
